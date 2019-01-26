@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <label for="animal">Gif Keyword</label>
                     <input type="keyword" class="form-control" id="input" placeholder="Keyword">
@@ -31,14 +31,17 @@
                 <button type="submit" id="submit" class="btn btn-danger">Submit</button>
                 </form>
             </div>
-            <div class="col-sm-8" id="addnewbuttons">
+            <div class="col-sm-2">
+                <button type="New Gifs!" id="moreGifs" class="btn btn-danger">Want New Gifs?</button>
+            </div>
+            <div class="col-sm-7" id="addnewbuttons">
 
             </div>
         </div>
     </div>
-    <div class="container3 container mx-auto jumbotron">
+    <div class="container3 container jumbotron">
         <div class="row">
-            <div id="gifs-appear-here" class="col-sm">
+            <div id="gifs-appear-here" class="col-sm ">
 
             </div>
         </div>
@@ -55,7 +58,8 @@
                 var keyword = $("#input").val().trim();
                 animals.push(keyword);
                 renderButtons();
-                console.log(animals)
+                console.log(animals);
+                $("#input").val("");
             });
 
             renderButtons();
@@ -67,6 +71,7 @@
                 for (var i = 0; i < animals.length; i++) {
                     var newButton = $("<button type='button'>");
                     newButton.attr("data-animal", animals[i]);
+
                     newButton.addClass("btn btn-danger animalButton");
                     newButton.text(animals[i]);
                     // Adding the button to the HTML
@@ -74,16 +79,22 @@
                 }
             }
 
+            //$("#")
+
             // This function handles events where one button is clicked
 
-            $(".animalButton").on("click", function () {
+            $(document).on("click", ".animalButton", function () {
                 var animalName = $(this).attr("data-animal");
-                console.log(this)
                 var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
                     animalName + "&api_key=dc6zaTOxFJmzC&limit=10";
+                $("#moreGifs").on("click", function () {
+                    var firedButton = $(this).attr("data-animal")
+                    console.log(firedButton)
+                    queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                        animalName + "&api_key=dc6zaTOxFJmzC&limit=10& offset=20";
+                    $("#gifs-appear-here").empty();
+                })
                 $("#gifs-appear-here").empty();
-
-
 
                 $.ajax({
                     url: queryURL,
@@ -95,17 +106,17 @@
 
 
                     for (var i = 0; i < results.length; i++) {
-                        var animalDiv = $("<div>");
-                        var p = $("<p>" + "Rating: " + results[i].rating + "</p>");
+                        var animalDiv = $("<div class='display'>");
+                        var rating = $("<p>" + "Rating: " + results[i].rating + "</p>");
                         var animalImage = $("<img class='gif' data-state='still'>");
                         var animalImageMove = results[i].images.fixed_height.url;
                         var animalImageStill = results[i].images.fixed_height_still.url;
                         animalImage.attr('src', animalImageStill);
                         animalImage.attr('data-animate', animalImageMove);
                         animalImage.attr("data-still", animalImageStill);
-                        $(animalDiv).append(p);
+                        $(animalDiv).append(rating);
                         $(animalDiv).append(animalImage);
-                        $("#gifs-appear-here").prepend(animalDiv);
+                        $("#gifs-appear-here").append(animalDiv);
 
                     }
 

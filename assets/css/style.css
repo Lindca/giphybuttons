@@ -1,5 +1,6 @@
 body{
     background-image: url(../images/webtreats-free-tileable-tropical-abstract-patterns-part-1-flickr-webtreats-free-tileable-tropical-abstract-patterns-part-1-1-by-webtreats.jpg);
+    color: white;
 }
 .jumbotron{
     font-size: 30px;
@@ -14,7 +15,14 @@ h1{font-family: 'Rajdhani', sans-serif;
 .container{
     min-width: 85%;
 }
-p{font: white;
+/* #gifs-appear-here{
+    display: inline-table;
+} */
+
+.display{
+    display: inline-table;
 }
-h1{font: white;
+.gif{
+
+margin: 10px;
 }
