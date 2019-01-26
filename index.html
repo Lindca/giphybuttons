@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="./assets/css/reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch|Gugi|Miniver|Neucha|Rajdhani" rel="stylesheet">
+    <link href="./assets/css/style.css" rel="stylesheet">
+    <title>Giphy Butt</title>
+</head>
+
+<body>
+    <div class="container1 container mx-auto jumbotron">
+        <div class="row">
+            <div class="col-sm">
+                <h1>Giphy Butt</h1>
+                <p>Check out the gifs by pushing a button or searching for your own!</p>
+            </div>
+        </div>
+    </div>
+    <div class="container2 container mx-auto jumbotron">
+        <div class="row">
+            <div class="col-sm">
+
+            </div>
+            <div class="col-sm">
+                <button type="button" data-animal="narwhal" class="btn btn-danger">Narwhal</button>
+                <button type="button" data-animal="unicorn" class="btn btn-danger">Unicorn</button>
+                <button type="button" data-animal="wolf" class="btn btn-danger">Wolf</button>
+                <button type="button" data-animal="dinosaur" class="btn btn-danger">Dinosaur</button>
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
+    </div>
+    <div class="container3 container mx-auto jumbotron">
+        <div class="row">
+            <div class="col-sm">
+
+            </div>
+            <div id="gifs-appear-here" class="col-sm">
+                
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("button").on("click", function () {
+            var animal = $(this).attr("data-animal");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                // Step 1: Run this file, click a button, and see what the response object looks like in the browser's console.
+                // Open up the data key, then open up the 0th, element. Study the keys and how the JSON is structured.
+
+                console.log(response);
+
+                // Step 2: since the image information is inside of the data key,
+                // make a variable named results and set it equal to response.data
+
+
+                // =============== put step 2 in between these dashes ==================
+                var results = response.data;
+                // ========================
+
+                for (var i = 0; i < results.length; i++) {
+                    // Step 3: uncomment the for loop above and the closing curly bracket below.
+                    // Make a div with jQuery and store it in a variable named animalDiv.
+                    var animalDiv = $("<div>");
+                    // Make a paragraph tag with jQuery and store it in a variable named p.
+                    var p = $("<p>" + results[i].rating + "</p>");
+                    // Set the inner text of the paragraph to the rating of the image in results[i].
+                    // Make an image tag with jQuery and store it in a variable named animalImage.
+                    var animalImage = $("<img id='moving'>");
+                    // Set the image's src to results[i]'s fixed_height.url.
+                    animalImage.attr('src', results[i].images.fixed_height.url);
+                    // Append the p variable to the animalDiv variable.
+                    $(animalDiv).append(p);
+                    // Append the animalImage variable to the animalDiv variable.
+                    $(animalDiv).append(animalImage);
+                    // Prepend the animalDiv variable to the element with an id of gifs-appear-here.
+                    $("#gifs-appear-here").prepend(animalDiv);
+
+                    // ============= put step 3 in between these dashes ======================
+
+                    // ==================================
+                }
+
+            });
+    </script>
+</body>
+
+</html>
