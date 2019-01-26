@@ -15,90 +15,116 @@
 </head>
 
 <body>
-    <div class="container1 container mx-auto jumbotron">
+    <div class="container1 container jumbotron">
         <div class="row">
             <div class="col-sm">
                 <h1>Giphy Butt</h1>
                 <p>Check out the gifs by pushing a button or searching for your own!</p>
             </div>
         </div>
-    </div>
-    <div class="container2 container mx-auto jumbotron">
         <div class="row">
-            <div class="col-sm">
-
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="animal">Gif Keyword</label>
+                    <input type="keyword" class="form-control" id="input" placeholder="Keyword">
+                </div>
+                <button type="submit" id="submit" class="btn btn-danger">Submit</button>
+                </form>
             </div>
-            <div class="col-sm">
-                <button type="button" data-animal="narwhal" class="btn btn-danger">Narwhal</button>
-                <button type="button" data-animal="unicorn" class="btn btn-danger">Unicorn</button>
-                <button type="button" data-animal="wolf" class="btn btn-danger">Wolf</button>
-                <button type="button" data-animal="dinosaur" class="btn btn-danger">Dinosaur</button>
-            </div>
-            <div class="col-sm">
+            <div class="col-sm-8" id="addnewbuttons">
 
             </div>
         </div>
     </div>
     <div class="container3 container mx-auto jumbotron">
         <div class="row">
-            <div class="col-sm">
-
-            </div>
             <div id="gifs-appear-here" class="col-sm">
-                
-            </div>
-            <div class="col-sm">
 
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        $("button").on("click", function () {
-            var animal = $(this).attr("data-animal");
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                animal + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-                // Step 1: Run this file, click a button, and see what the response object looks like in the browser's console.
-                // Open up the data key, then open up the 0th, element. Study the keys and how the JSON is structured.
+        $(document).ready(function () {
+            var animals = ["Narwhal", "Unicorn", "Wolf", "Dinosaur"];
 
-                console.log(response);
-
-                // Step 2: since the image information is inside of the data key,
-                // make a variable named results and set it equal to response.data
-
-
-                // =============== put step 2 in between these dashes ==================
-                var results = response.data;
-                // ========================
-
-                for (var i = 0; i < results.length; i++) {
-                    // Step 3: uncomment the for loop above and the closing curly bracket below.
-                    // Make a div with jQuery and store it in a variable named animalDiv.
-                    var animalDiv = $("<div>");
-                    // Make a paragraph tag with jQuery and store it in a variable named p.
-                    var p = $("<p>" + results[i].rating + "</p>");
-                    // Set the inner text of the paragraph to the rating of the image in results[i].
-                    // Make an image tag with jQuery and store it in a variable named animalImage.
-                    var animalImage = $("<img id='moving'>");
-                    // Set the image's src to results[i]'s fixed_height.url.
-                    animalImage.attr('src', results[i].images.fixed_height.url);
-                    // Append the p variable to the animalDiv variable.
-                    $(animalDiv).append(p);
-                    // Append the animalImage variable to the animalDiv variable.
-                    $(animalDiv).append(animalImage);
-                    // Prepend the animalDiv variable to the element with an id of gifs-appear-here.
-                    $("#gifs-appear-here").prepend(animalDiv);
-
-                    // ============= put step 3 in between these dashes ======================
-
-                    // ==================================
-                }
-
+            $("#submit").on("click", function () {
+                // event.preventDefault() prevents the form from trying to submit itself.
+                // We're using a form so that the user can hit enter instead of clicking the button if they want
+                event.preventDefault();
+                var keyword = $("#input").val().trim();
+                animals.push(keyword);
+                renderButtons();
+                console.log(animals)
             });
+
+            renderButtons();
+            function renderButtons() {
+                // (this is necessary otherwise we will have repeat buttons)
+                $("#addnewbuttons").empty();
+
+                // Looping through the array of animals
+                for (var i = 0; i < animals.length; i++) {
+                    var newButton = $("<button type='button'>");
+                    newButton.attr("data-animal", animals[i]);
+                    newButton.addClass("btn btn-danger animalButton");
+                    newButton.text(animals[i]);
+                    // Adding the button to the HTML
+                    $("#addnewbuttons").append(newButton);
+                }
+            }
+
+            // This function handles events where one button is clicked
+
+            $(".animalButton").on("click", function () {
+                var animalName = $(this).attr("data-animal");
+                console.log(this)
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                    animalName + "&api_key=dc6zaTOxFJmzC&limit=10";
+                $("#gifs-appear-here").empty();
+
+
+
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                }).then(function (response) {
+
+                    console.log(response);
+                    var results = response.data;
+
+
+                    for (var i = 0; i < results.length; i++) {
+                        var animalDiv = $("<div>");
+                        var p = $("<p>" + "Rating: " + results[i].rating + "</p>");
+                        var animalImage = $("<img class='gif' data-state='still'>");
+                        var animalImageMove = results[i].images.fixed_height.url;
+                        var animalImageStill = results[i].images.fixed_height_still.url;
+                        animalImage.attr('src', animalImageStill);
+                        animalImage.attr('data-animate', animalImageMove);
+                        animalImage.attr("data-still", animalImageStill);
+                        $(animalDiv).append(p);
+                        $(animalDiv).append(animalImage);
+                        $("#gifs-appear-here").prepend(animalDiv);
+
+                    }
+
+                    $(".gif").on("click", function () {
+                        var state = $(this).attr("data-state");
+                        if (state === "still") {
+                            $(this).attr("src", $(this).attr("data-animate"));
+                            $(this).attr("data-state", "animate");
+                        } else {
+                            $(this).attr("src", $(this).attr("data-still"));
+                            $(this).attr("data-state", "still");
+                        }
+                    });
+                });
+            })
+
+
+        })
+
     </script>
 </body>
 

@@ -1,18 +1,20 @@
 body{
-    background-image: url(../images/webtreats-free-tileable-tropical-abstract-patterns-part-1-flickr-webtreats-free-tileable-tropical-abstract-patterns-part-1-1-by-webtreats.jpg)
+    background-image: url(../images/webtreats-free-tileable-tropical-abstract-patterns-part-1-flickr-webtreats-free-tileable-tropical-abstract-patterns-part-1-1-by-webtreats.jpg);
 }
 .jumbotron{
     font-size: 30px;
     font-family: 'Rajdhani', sans-serif;
     background: black;
-    width: 90%;
     text-align: center;
     margin: 20px auto;
 }
 h1{font-family: 'Rajdhani', sans-serif;
     font-size: 40px;
-    font: red;
 }
-p{
-font:red;
+.container{
+    min-width: 85%;
+}
+p{font: white;
+}
+h1{font: white;
 }
