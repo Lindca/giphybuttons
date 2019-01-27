@@ -15,14 +15,12 @@ h1{font-family: 'Rajdhani', sans-serif;
 .container{
     min-width: 85%;
 }
-/* #gifs-appear-here{
-    display: inline-table;
-} */
-
 .display{
     display: inline-table;
 }
 .gif{
-
 margin: 10px;
+}
+button{
+    margin: 5px;
 }
