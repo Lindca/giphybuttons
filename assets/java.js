@@ -1,6 +1,6 @@
-$(document).ready(function () {
+
     var firedButton;
-    var animals = ["Narwhal", "Unicorn", "Wolf", "Dinosaur"];
+    var animals = ["Narwhal", "Wolf", "Dinosaur", "Unicorn"];
     var queryURL
     $(".container2").hide();
 
@@ -62,21 +62,18 @@ $(document).ready(function () {
             });
         });
     };
-function renderButtons() {
-    // (this is necessary otherwise we will have repeat buttons)
-    $("#addnewbuttons").empty();
+    function renderButtons() {
+        // (this is necessary otherwise we will have repeat buttons)
+        $("#addnewbuttons").empty();
 
-    // Looping through the array of animals
-    for (var i = 0; i < animals.length; i++) {
-        var newButton = $("<button type='button'>");
-        newButton.attr("data-animal", animals[i]);
+        // Looping through the array of animals
+        for (var i = 0; i < animals.length; i++) {
+            var newButton = $("<button type='button'>");
+            newButton.attr("data-animal", animals[i]);
 
-        newButton.addClass("btn btn-danger animalButton");
-        newButton.text(animals[i]);
-        // Adding the button to the HTML
-        $("#addnewbuttons").append(newButton);
+            newButton.addClass("btn btn-danger animalButton");
+            newButton.text(animals[i]);
+            // Adding the button to the HTML
+            $("#addnewbuttons").append(newButton);
+        }
     }
-}
-
-
-})
